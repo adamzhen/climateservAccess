@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='climateservaccess',
-    version='1.0.0',
+    version='0.0.1',
     author='Adam Zheng',
     author_email='adzheng@tamu.edu',
     description='A custom library for accessing the ClimateSERV API',
