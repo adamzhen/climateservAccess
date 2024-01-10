@@ -66,7 +66,7 @@ def getBox(lat: float, lon: float, res: float) -> list:
     return [[lon - half_res, lat + half_res], [lon + half_res, lat + half_res],
             [lon + half_res, lat - half_res], [lon - half_res, lat - half_res], [lon - half_res, lat + half_res]]
 
-def getClimateservData(data_type: int, start_date: str, end_date: str, operation_type: str, geometry_coords: list) -> pd.DataFrame:
+def getDataFrame(data_type: int, start_date: str, end_date: str, operation_type: str, geometry_coords: list) -> pd.DataFrame:
     """
     Retrieve data using ClimateSERV API.
 
