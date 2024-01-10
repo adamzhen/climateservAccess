@@ -1,6 +1,5 @@
 # Custom library for accessing the ClimateSERV API
 # By Adam Zheng
-# Last Updated: 1-6-2024
 
 import requests
 import json
@@ -36,6 +35,7 @@ datatypeDict = {
     666: "LIS_Soil_Moisture_40_100cm",
     667: "LIS_Soil_Moisture_100_200cm"
 }
+operationDict = {'average': 5, 'max': 0, 'min': 1}
 
 # Define the API endpoints
 submit_url = "https://climateserv.servirglobal.net/api/submitDataRequest/"
@@ -66,7 +66,7 @@ def getBox(lat: float, lon: float, res: float) -> list:
     return [[lon - half_res, lat + half_res], [lon + half_res, lat + half_res],
             [lon + half_res, lat - half_res], [lon - half_res, lat - half_res], [lon - half_res, lat + half_res]]
 
-def getClimateservData(data_type: int, start_date: str, end_date: str, interval_type: int, operation_type: int, geometry_coords: list) -> pd.DataFrame:
+def getClimateservData(data_type: int, start_date: str, end_date: str, operation_type: str, geometry_coords: list) -> pd.DataFrame:
     """
     Retrieve data using ClimateSERV API.
 
@@ -74,26 +74,26 @@ def getClimateservData(data_type: int, start_date: str, end_date: str, interval_
     data_type (int): Data type.
     start_date (str): Start date in MM/DD/YYYY format.
     end_date (str): End date in MM/DD/YYYY format.
-    interval_type (int): Interval type.
-    operation_type (int): Operation type.
+    operation_type (string): Operation type.
     geometry_coords (list): List of coordinates.
 
     Returns:
     pandas DataFrame: DataFrame containing climateserv data.
     """
-    # res = 0.02 # 0.1 degree resolution
-    # half_res = res / 2
-    # geometry_coords = [[lon - half_res, lat + half_res], [lon + half_res, lat + half_res],
-    #                       [lon + half_res, lat - half_res], [lon - half_res, lat - half_res], [lon - half_res, lat + half_res]]
-    # [[-16.85, 13.85], [-16.85, 13.05], [-13.78, 13.05], [-13.78, 13.85], [-16.85, 13.85]] # Gambia
+
+    try:
+        operation_type_num = operationDict[operation_type.lower().strip()]
+    except KeyError:
+        print(f"Invalid operation type. Valid operations are: {list(operationDict.keys())}")
+        return None
 
     # Define the API parameters
     params = {
         'datatype': data_type,
         'begintime': start_date,
         'endtime': end_date,
-        'intervaltype': interval_type,  # {0: 'Daily', 1: 'Monthly', 2: 'Yearly'}
-        'operationtype': operation_type,  # [[0, 'max', 'Max'], [1, 'min', 'Min'], [2, 'median', 'Median'], [3, 'range', 'Range'], [4, 'sum', 'Sum'], [5, 'avg', 'Average'], [6, 'download', 'Download'], [7, 'netcdf', 'NetCDF'], [8, 'csv', 'CSV']]
+        'intervaltype': 0, # 0, 1, 2 all give the same results
+        'operationtype': operation_type_num,  # see operationDict for options
         'callback': 'successCallback',
         'dateType_Category': 'default',
         'geometry': json.dumps({
@@ -106,7 +106,8 @@ def getClimateservData(data_type: int, start_date: str, end_date: str, interval_
     response = requests.get(submit_url, params=params)
     request_ID = response.text
     request_ID = request_ID[ request_ID.find('[')+2 : request_ID.find("]")-1 ]
-    print(f"REQUEST SUBMITTED: {datatypeDict[data_type]}")
+
+    print(f"REQUEST SUBMITTED: {datatypeDict[data_type]} [{data_type}], {start_date} to {end_date}, {operation_type}")
     print(f"ID: {request_ID}")
 
     # Check the progress in a loop
@@ -116,14 +117,21 @@ def getClimateservData(data_type: int, start_date: str, end_date: str, interval_
         print(f"{progress:.1f}%")
         if progress >= 100:
             break
+        if progress == -1:
+            print("Request failed. Error encountered.")
+            return None
         time.sleep(1)  # Wait for 60 seconds before checking again
 
     # Once complete, retrieve the data
     data = get_data(request_ID)
-    if data is not None:
-        print("Data retrieved successfully.")
-        # Covert json data to a Pandas DataFrame
-        return pd.DataFrame(data)
-    else:
+    if data is None:
         print("No data found.")
         return None
+    else:
+        df = pd.DataFrame(data)
+        if df.empty:
+            print("No data found.")
+        else:
+            print("Data retrieved successfully.")
+
+        return df
