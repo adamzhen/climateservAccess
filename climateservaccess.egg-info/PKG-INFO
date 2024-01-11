@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: climateservaccess
-Version: 1.0.0
+Version: 1.0.1
 Summary: A custom library for accessing the ClimateSERV API
 Home-page: https://github.com/adamzhen/climateservAccess
 Author: Adam Zheng
@@ -23,11 +23,10 @@ A python package to access data through [ClimateSERV API](https://climateserv.se
  
 ## Documentation
 ### datatypeDict
-Stores a dictionary with all datatype numbers and names *(see Reference)*
+Stores a dictionary with all datatype numbers and names *(see <a href="#reference">Reference</a>)*
 
 ### getDataFrame
-Accesses requested data through ClimateSERV API and returns it in a pandas dataframe
-*(see Example Code)*
+Accesses requested data through ClimateSERV API and returns it in a pandas dataframe *(see <a href="#example-code">Example Code</a>)*
 #### Parameters
 * **data_type** (int): Datatype number
 * **start_date** (str): Start date in MM/DD/YYYY format

@@ -181,7 +181,10 @@ def getDataFrame(data_type: int, start_date: str, end_date: str, operation_type:
     # Check the progress in a loop
     while True:
         response = requests.get(progress_url, params={"id": request_ID})
-        progress = float(response.text[1:len(response.text)-1])
+        try:
+            progress = float(response.text[1:len(response.text)-1])
+        except:
+            progress = -1
         print(f"{progress:.1f}%")
         if progress >= 100:
             break
