@@ -13,20 +13,20 @@ This package was created in part because the existing [climateserv](https://pypi
 | Datatype Number  | Datatype                          | Data Availability | Date Range |
 |-----------|------------------------------------------|-------------------|------------|
 | 0         | CHIRPS_Rainfall                          | Every 1 day       | 1981 - Near Present |
-| 1         | eMODIS_NDVI_W_Africa                     | Every 10 days     | 2002 - September, 2022 |
-| 2         | eMODIS_NDVI_E_Africa                     | Every 10 days     | 2002 - September, 2022 |
-| 5         | eMODIS_NDVI_S_Africa                     | Every 10 days     | 2002 - September, 2022 |
+| 1         | eMODIS_NDVI_W_Africa                     | Every 10 days     | 2002 - September 2022 |
+| 2         | eMODIS_NDVI_E_Africa                     | Every 10 days     | 2002 - September 2022 |
+| 5         | eMODIS_NDVI_S_Africa                     | Every 10 days     | 2002 - September 2022 |
 | 26        | NASA_IMERG_Late                          | Every 1 day       | 2000 - Near Present |
-| 28        | eMODIS_NDVI_Central_Asia                 | Every 10 days     | 2002 - September, 2022 |
+| 28        | eMODIS_NDVI_Central_Asia                 | Every 10 days     | 2002 - September 2022 |
 | 29        | ESI_4WEEK                                | Every 7 days      | 2000 - Present |
 | 31        | CHIRPS_GEFS_Forecast_Mean_Anom           | Every 1 day       | 1985 - Near Present |
 | 32        | CHIRPS_GEFS_Forecast_Mean_Precip         | Every 1 day       | 1985 - Near Present |
 | 33        | ESI_12WEEK                               | Every 7 days      | 2000 - Present |
-| 37        | USDA_SMAP_Soil_Moisture_Profile          | Every 3 days      | March 31, 2015 - August 3, 2022 |
-| 38        | USDA_SMAP_Surface_Soil_Moisture          | Every 3 days      | March 31, 2015 - August 3, 2022 |
-| 39        | USDA_SMAP_Surface_Soil_Moisture_Anom     | Every 3 days      | March 31, 2015 - August 3, 2022 |
-| 40        | USDA_SMAP_Sub_Surface_Soil_Moisture      | Every 3 days      | March 31, 2015 - August 3, 2022 |
-| 41        | USDA_SMAP_Sub_Surface_Soil_Moisture_Anom | Every 3 days      | March 31, 2015 - August 3, 2022 |
+| 37        | USDA_SMAP_Soil_Moisture_Profile          | Every 3 days      | March 2015 - August 2022 |
+| 38        | USDA_SMAP_Surface_Soil_Moisture          | Every 3 days      | March 2015 - August 2022 |
+| 39        | USDA_SMAP_Surface_Soil_Moisture_Anom     | Every 3 days      | March 2015 - August 2022 |
+| 40        | USDA_SMAP_Sub_Surface_Soil_Moisture      | Every 3 days      | March 2015 - August 2022 |
+| 41        | USDA_SMAP_Sub_Surface_Soil_Moisture_Anom | Every 3 days      | March 2015 - August 2022 |
 | 90        | UCSB_CHIRP_Rainfall                      | Every 1 day       | 1981 - Near Present |
 | 91        | NASA_IMERG_Early                         | Every 1 day       | 2000 - Near Present |
 | 541       | NSIDC_SMAP_Sentinel_1Km                  | Every 1 day       | 2015 - Near Present |
