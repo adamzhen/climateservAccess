@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+setup.cfg
+setup.py
+climateservaccess/__init__.py
+climateservaccess/climateservaccess.py
+climateservaccess.egg-info/PKG-INFO
+climateservaccess.egg-info/SOURCES.txt
+climateservaccess.egg-info/dependency_links.txt
+climateservaccess.egg-info/top_level.txt
