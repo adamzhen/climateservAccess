@@ -11,13 +11,23 @@ A python package to access data through [ClimateSERV API](https://climateserv.se
 Stores a dictionary with all datatype numbers and names *(see <a href="#reference">Reference</a>)*
 
 ### getDataFrame
-Accesses requested data through ClimateSERV API and returns it in a pandas dataframe *(see <a href="#example-code">Example Code</a>)*
+Accesses requested data through ClimateSERV API and returns it in a pandas dataframe *(see <a href="#example-code">Example Code</a>)*. Returns None if no data found.
 #### Parameters
 * **data_type** (int): Datatype number
 * **start_date** (str): Start date in MM/DD/YYYY format
 * **end_date** (str): End date in MM/DD/YYYY format
 * **operation_type** (string): 'Average', 'Min', or 'Max'
 * **geometry_coords** (list): List of coordinates for polygon
+
+### getCSV
+Accesses requested data through ClimateSERV API and saves it to a csv file.
+#### Parameters
+* **data_type** (int): Datatype number
+* **start_date** (str): Start date in MM/DD/YYYY format
+* **end_date** (str): End date in MM/DD/YYYY format
+* **operation_type** (string): 'Average', 'Min', or 'Max'
+* **geometry_coords** (list): List of coordinates for polygon
+* **filename** (str): Name of the CSV file to be saved
 
 ### getBox
 Returns a list with coordinates for a square centered at (**lon**, **lat**), with width **res**
