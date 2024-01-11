@@ -8,11 +8,10 @@ A python package to access data through [ClimateSERV API](https://climateserv.se
  
 ## Documentation
 ### datatypeDict
-Stores a dictionary with all datatype numbers and names *(see Reference)*
+Stores a dictionary with all datatype numbers and names *(see <a href="#reference">Reference</a>)*
 
 ### getDataFrame
-Accesses requested data through ClimateSERV API and returns it in a pandas dataframe
-*(see Example Code)*
+Accesses requested data through ClimateSERV API and returns it in a pandas dataframe *(see <a href="#example-code">Example Code</a>)*
 #### Parameters
 * **data_type** (int): Datatype number
 * **start_date** (str): Start date in MM/DD/YYYY format
