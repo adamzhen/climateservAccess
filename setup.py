@@ -8,7 +8,7 @@ long_description = (here / "README.md").read_text(encoding="utf-8")
 
 setup(
     name='climateservaccess',
-    version='1.0.1',
+    version='1.0.2',
     author='Adam Zheng',
     author_email='adzheng@tamu.edu',
     description='A custom library for accessing the ClimateSERV API',

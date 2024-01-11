@@ -176,7 +176,12 @@ def getDataFrame(data_type: int, start_date: str, end_date: str, operation_type:
     request_ID = request_ID[ request_ID.find('[')+2 : request_ID.find("]")-1 ]
 
     print(f"REQUEST SUBMITTED: {datatypeDict[data_type]} [{data_type}], {start_date} to {end_date}, {operation_type}")
-    print(f"ID: {request_ID}")
+    # print(f"ID: {request_ID}")
+
+    # Progress bar
+    bar_length = 20
+    progress_bar = bar_length * "▱"
+    print(f"{progress_bar} 0%", end="\r")
 
     # Check the progress in a loop
     while True:
@@ -185,24 +190,63 @@ def getDataFrame(data_type: int, start_date: str, end_date: str, operation_type:
             progress = float(response.text[1:len(response.text)-1])
         except:
             progress = -1
-        print(f"{progress:.1f}%")
-        if progress >= 100:
+
+        if progress >= 100: # Once complete
             break
         if progress == -1:
             print("Request failed. Error encountered.")
             return None
-        time.sleep(1)  # Wait for 60 seconds before checking again
+        
+        # Update the progress bar
+        progress_bar = int(progress/100*bar_length) * "▰"
+        progress_bar += (bar_length - len(progress_bar)) * "▱"
+        progress_bar += f" {progress:.0f}%"
+        print(progress_bar, end="\r")
+
+        time.sleep(0.1)  # Wait before checking again
 
     # Once complete, retrieve the data
     data = get_data(request_ID)
+    print(">", end=" ")
+    clear_bar = bar_length * " " # Added spaces to overwrite the progress bar
     if data is None:
-        print("No data found.")
+        print("No data found." + clear_bar) 
         return None
     else:
         df = pd.DataFrame(data)
         if df.empty:
-            print("No data found.")
+            print("No data found." + clear_bar)
+            return None
         else:
-            print("Data retrieved successfully.")
+            print("Data retrieved successfully." + clear_bar)
+            return df
+    
+def getCSV(data_type: int, start_date: str, end_date: str, operation_type: str, geometry_coords: list, filename: str) -> None:
+    """
+    Retrieve data using ClimateSERV API and save as CSV.
 
-        return df
+    Parameters:
+    data_type (int): Data type.
+    start_date (str): Start date in MM/DD/YYYY format.
+    end_date (str): End date in MM/DD/YYYY format.
+    operation_type (string): Operation type.
+    geometry_coords (list): List of coordinates.
+    filename (str): Name of the CSV file to be saved.
+    """
+
+    # Retrieve the data
+    df = getDataFrame(data_type, start_date, end_date, operation_type, geometry_coords)
+
+    if df is not None: # If data is found, save as CSV (if not, getDataFrame will have printed an error message)
+        print(">", end=" ")
+        
+        temp_data = pd.DataFrame(df['data'].to_list())
+
+        # Keep only the date, raw_value, NaN columns    
+        temp_data = temp_data[['date', 'raw_value']]
+        # Rename raw_value to operation_type
+        temp_data.rename(columns={'raw_value': f"{datatypeDict[data_type].lower()}_{operation_type}"}, inplace=True)
+
+        # Rename the columns
+        temp_data.to_csv(filename, index=False)
+        print(f"Data saved to {filename}.")
