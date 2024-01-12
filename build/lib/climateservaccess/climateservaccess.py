@@ -180,8 +180,8 @@ def getDataFrame(data_type: int, start_date: str, end_date: str, operation_type:
 
     # Progress bar
     bar_length = 20
-    progress_bar = bar_length * "▱"
-    print(f"{progress_bar} 0%", end="\r")
+    progress_bar = f"[{bar_length * '-'}] 0%"
+    print(progress_bar, end="\r")
 
     # Check the progress in a loop
     while True:
@@ -198,9 +198,8 @@ def getDataFrame(data_type: int, start_date: str, end_date: str, operation_type:
             return None
         
         # Update the progress bar
-        progress_bar = int(progress/100*bar_length) * "▰"
-        progress_bar += (bar_length - len(progress_bar)) * "▱"
-        progress_bar += f" {progress:.0f}%"
+        nbars = int(progress/100*bar_length)
+        progress_bar = f"[{nbars * '#'}{(bar_length-nbars) * '-'}] {progress:.0f}%"
         print(progress_bar, end="\r")
 
         time.sleep(0.1)  # Wait before checking again
@@ -244,9 +243,12 @@ def getCSV(data_type: int, start_date: str, end_date: str, operation_type: str, 
 
         # Keep only the date, raw_value, NaN columns    
         temp_data = temp_data[['date', 'raw_value']]
-        # Rename raw_value to operation_type
-        temp_data.rename(columns={'raw_value': f"{datatypeDict[data_type].lower()}_{operation_type}"}, inplace=True)
+        # Rename raw_value to datatype
+        temp_data.rename(columns={'raw_value': f"{datatypeDict[data_type]}"}, inplace=True)
+        # Convert date to datetime and rename to Date
+        temp_data['date'] = pd.to_datetime(temp_data['date'])
+        temp_data.rename(columns={'date': 'Date'}, inplace=True)
 
-        # Rename the columns
+        # Save as CSV
         temp_data.to_csv(filename, index=False)
         print(f"Data saved to {filename}.")
