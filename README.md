@@ -12,6 +12,7 @@ Stores a dictionary with all datatype numbers and names *(see <a href="#referenc
 
 ### getDataFrame
 Accesses requested data through ClimateSERV API and returns it in a pandas dataframe *(see <a href="#example-code">Example Code</a>)*. Returns None if no data found.
+
 #### Parameters
 * **data_type** (int): Datatype number
 * **start_date** (str): Start date in MM/DD/YYYY format
