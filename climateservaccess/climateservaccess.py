@@ -104,6 +104,7 @@ datatypeDict = {
     667: "LIS_Soil_Moisture_100_200cm"
 }
 operationDict = {'average': 5, 'max': 0, 'min': 1}
+BARLENGTH = 20
 
 # Define the API endpoints
 submit_url = "https://climateserv.servirglobal.net/api/submitDataRequest/"
@@ -117,6 +118,11 @@ def get_data(request_ID): # helper function to retrieve the data
     else:
         print("Failed to retrieve data:", response.status_code)
         return None
+
+def progress_bar(progress, bar_length=BARLENGTH): # helper function to print a progress bar
+    nbars = int(progress/100*bar_length)
+    progress_bar = f"[{nbars * '#'}{(bar_length-nbars) * '-'}] {progress:.0f}%"
+    print(progress_bar, end="\r")
 
 def getBox(lat: float, lon: float, res: float) -> list:
     """
@@ -149,7 +155,7 @@ def getDataFrame(data_type: int, start_date: str, end_date: str, operation_type:
     pandas DataFrame: DataFrame containing climateserv data.
     """
 
-    try:
+    try: # Check if operation type is valid
         operation_type_num = operationDict[operation_type.lower().strip()]
     except KeyError:
         print(f"Invalid operation type. Valid operations are: {list(operationDict.keys())}")
@@ -178,10 +184,8 @@ def getDataFrame(data_type: int, start_date: str, end_date: str, operation_type:
     print(f"REQUEST SUBMITTED: {datatypeDict[data_type]} [{data_type}], {start_date} to {end_date}, {operation_type}")
     # print(f"ID: {request_ID}")
 
-    # Progress bar
-    bar_length = 20
-    progress_bar = f"[{bar_length * '-'}] 0%"
-    print(progress_bar, end="\r")
+    # Start progress bar
+    progress_bar(0)
 
     # Check the progress in a loop
     while True:
@@ -197,17 +201,15 @@ def getDataFrame(data_type: int, start_date: str, end_date: str, operation_type:
             print("Request failed. Error encountered.")
             return None
         
-        # Update the progress bar
-        nbars = int(progress/100*bar_length)
-        progress_bar = f"[{nbars * '#'}{(bar_length-nbars) * '-'}] {progress:.0f}%"
-        print(progress_bar, end="\r")
+        # Update progress bar
+        progress_bar(progress)
 
         time.sleep(0.1)  # Wait before checking again
 
     # Once complete, retrieve the data
     data = get_data(request_ID)
     print(">", end=" ")
-    clear_bar = bar_length * " " # Added spaces to overwrite the progress bar
+    clear_bar = BARLENGTH * " " # Added spaces to overwrite the progress bar
     if data is None:
         print("No data found." + clear_bar) 
         return None

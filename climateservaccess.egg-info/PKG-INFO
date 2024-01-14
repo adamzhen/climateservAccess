@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: climateservaccess
-Version: 1.0.3
+Version: 1.0.4
 Summary: A custom library for accessing the ClimateSERV API
 Home-page: https://github.com/adamzhen/climateservAccess
 Author: Adam Zheng
