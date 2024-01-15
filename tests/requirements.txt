@@ -1,0 +1,3 @@
+climateservaccess==1.0.4
+matplotlib==3.8.2
+pandas==2.1.4
